@@ -21,16 +21,17 @@ import {
 } from 'src/constants/articleProps';
 
 type ArticleParamsFormProps = {
-	params: ArticleStateType;
+	// params: ArticleStateType;
 	setParams: (params: ArticleStateType) => void;
 };
 
 export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
-	params,
+	// params,
 	setParams,
 }) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [currentParams, setCurrentParams] = useState<ArticleStateType>(params);
+	const [currentParams, setCurrentParams] =
+		useState<ArticleStateType>(defaultArticleState);
 
 	const form = useRef<HTMLFormElement>(null);
 
@@ -44,6 +45,11 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 		setCurrentParams(defaultArticleState);
 		setParams(defaultArticleState);
 	};
+
+	useEffect(() => {
+		// Начальная установка параметров
+		setCurrentParams(defaultArticleState);
+	}, []);
 
 	useEffect(() => {
 		const closeEsc = (event: KeyboardEvent) => {
@@ -67,23 +73,23 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 	}, [isOpen]);
 
 	const handleFontFamilyChange = (item: OptionType) => {
-		setCurrentParams({ ...currentParams, fontFamilyOption: item });
+		setCurrentParams((prev) => ({ ...prev, fontFamilyOption: item }));
 	};
 
 	const handlerFontColorChange = (item: OptionType) => {
-		setCurrentParams({ ...currentParams, fontColor: item });
+		setCurrentParams((prev) => ({ ...prev, fontColor: item }));
 	};
 
 	const handlerBackgroundChange = (item: OptionType) => {
-		setCurrentParams({ ...currentParams, backgroundColor: item });
+		setCurrentParams((prev) => ({ ...prev, backgroundColor: item }));
 	};
 
 	const handlerContentWidthChange = (item: OptionType) => {
-		setCurrentParams({ ...currentParams, contentWidth: item });
+		setCurrentParams((prev) => ({ ...prev, contentWidth: item }));
 	};
 
 	const handlerFontSizeChange = (item: OptionType) => {
-		setCurrentParams({ ...currentParams, fontSizeOption: item });
+		setCurrentParams((prev) => ({ ...prev, fontSizeOption: item }));
 	};
 
 	return (
@@ -96,13 +102,7 @@ export const ArticleParamsForm: React.FC<ArticleParamsFormProps> = ({
 					onSubmit={formSubmitHandler}
 					onReset={formResetHandler}
 					className={styles.form}>
-					<Text
-						as='h2'
-						size={31}
-						weight={800}
-						family={'open-sans'}
-						uppercase
-						dynamicLite>
+					<Text as='h2' size={31} weight={800} family={'open-sans'} uppercase>
 						Задайте параметры
 					</Text>
 					<Select
